@@ -196,4 +196,25 @@ When node is operating near capacity or if there is a problem in the network, th
 
 ### Multi-leader Replication
 
+- two writers write at same time, need to handle write conflicts
+  - give each writes a unique ID indicating timestamp, pick the one with lastest timestamp as winner
+  
+- how leaders share information: _replication topology_
+  - all-to-all
+  - circular (tag the data with machine's unique identifier to avoid infinite replication loops
+  - star topology
+
+### Leaderless replication
+also known as _Dynamo-style_
+
+client sends writes to serveral nodes in parallel instead of only one node. May get different response but pick the majority
+
+To make eventual consistency:
+- _read repair_
+- _anti-entropy process_: a process to detect discrepency in nodes
+
+
+
+
+
 
