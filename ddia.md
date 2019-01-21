@@ -217,4 +217,38 @@ To make eventual consistency:
 > For defining concurrency, exact time does not matter: we simply call two operations concurrent if they are both unaware of each other, regardless of the physical time at which they occurred.
 
 
+## Partitions
+
+unfiar partitioning -> _hot spot_
+- Partitioning by key range
+- Partitioning by hash of key
+  - lose the ability to do efficient range queries like key range partitioning
+  
+### skewed workloads and relieving hot spots
+- data systems cannot uatomatically compensate for highly skewed workload, so put the logic in application level
+- if a key is very hot, put a random number to the begining or end of the key to make it evenly hashed to diffrenet partitions
+
+### partition and secondary indexes
+partioning by key, but search by secondary indexes can be awkward
+- partioning secondary indexes by document 
+  - each partition has it own secondary index (_local indexes_)
+  - to search/query, you need to query each partition (know as _scatter/gather_) -> prone to tail lantency amplification (used in _MongoDB, Riak, Cassandra, Elasticsearch, SolrCloud, VoltDB_)
+- partioning secondary indexes by term
+  - _global indexes_ are partitioned into different nodes by different hash with primary key
+  - reads will be more efficient, but writes can be cross partitions
+  
+### Rebalancing Partitions
+> The process of moving load from one node in the cluster to another is called _rebalancing_
+  
+strategies:
+- Do not use hash mode N, because if your number of partitions changed, there will a lot of unnecessary rebalacing between nodes
+- create many more partitions than the number of nodes, (1000 to 10), and keep the number of partitions fixed. added nodes will _steal_ some partitions from other nodes. (the entire partition moved) (used in _Riak, Elasticsearch, Couchbase, Voldermort_)
+- dynamic partitioning: number of partitions adapts to the total data volume
+- partitioning proportional to nodes: have fixed number of partitions per node, added node will choose existing partions to split (_Cassandra, Ketama_)
+  
+### Request Routing
+
+
+  
+
 
