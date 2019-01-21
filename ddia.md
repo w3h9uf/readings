@@ -214,7 +214,7 @@ To make eventual consistency:
 - _anti-entropy process_: a process to detect discrepency in nodes
 
 
-
+> For defining concurrency, exact time does not matter: we simply call two operations concurrent if they are both unaware of each other, regardless of the physical time at which they occurred.
 
 
 
