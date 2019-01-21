@@ -233,7 +233,7 @@ partioning by key, but search by secondary indexes can be awkward
 - partioning secondary indexes by document 
   - each partition has it own secondary index (_local indexes_)
   - to search/query, you need to query each partition (know as _scatter/gather_) -> prone to tail lantency amplification (used in _MongoDB, Riak, Cassandra, Elasticsearch, SolrCloud, VoltDB_)
-- partioning secondary indexes by term
+- partioning secondary indexes by term (_global indexes_)
   - _global indexes_ are partitioned into different nodes by different hash with primary key
   - reads will be more efficient, but writes can be cross partitions
   
@@ -247,7 +247,13 @@ strategies:
 - partitioning proportional to nodes: have fixed number of partitions per node, added node will choose existing partions to split (_Cassandra, Ketama_)
   
 ### Request Routing
-
+Q: which compenent should be responsible to route request?
+A: Three possible ways:
+  - node level: send to random node, node will reroute if this request not belong to it (_Cassandra, Riak_) _gossip protocol_
+  - routing tier: a dedicated routing service
+  - client level: expose partitions to client
+  
+- ZooKeeper to have all nodes registered and keep nodes infos, router will keep updated by talking to ZooKeeper
 
   
 
