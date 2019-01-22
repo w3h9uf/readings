@@ -248,12 +248,14 @@ strategies:
   
 ### Request Routing
 Q: which compenent should be responsible to route request?
+
 A: Three possible ways:
   - node level: send to random node, node will reroute if this request not belong to it (_Cassandra, Riak_) _gossip protocol_
   - routing tier: a dedicated routing service
   - client level: expose partitions to client
   
-- ZooKeeper to have all nodes registered and keep nodes infos, router will keep updated by talking to ZooKeeper
+
+ZooKeeper to have all nodes registered and keep nodes infos, router will keep updated by talking to ZooKeeper
 
   
 
