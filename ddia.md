@@ -258,5 +258,10 @@ A: Three possible ways:
 ZooKeeper to have all nodes registered and keep nodes infos, router will keep updated by talking to ZooKeeper
 
   
+## Transactions
+> A key feature of a transaction is that it can be aborted and safely retried if an error occurred.ACID databases are based on this philosophy: if the database is in danger of violating its guaranteeof atomicity, isolation, or durability, it would rather abandon the transaction entirely than allowit to remain half-finished.
+
+- Transaction will handle error by aborting half-finished operations, but more important is to make sure retry transient errors. 
+- For transactions with side effects outside database, those side effects may happen even if the transaction is aborted. use _two-phase commit_ to make sure several different systems eother commit or abort together. 
 
 
