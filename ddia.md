@@ -284,3 +284,22 @@ ZooKeeper to have all nodes registered and keep nodes infos, router will keep up
 - a key principle of _snapshot isolation_ is __readers never block writers, and writers never block readers__
 
 - _dirty writes_, _lost updates_ and _write skew_ are three.   common race conditions that can occur when different transactions concurrently try to write to the same object
+
+### Serializability
+> Serializable isolation is usually regarded as the strongest isolation level. It guarantees that eventhough transactions may execute in parallel, the end result is the same as if they had executed oneat a time, serially, without any concurrency. Thus, the database guarantees that if thetransactions behave correctly when run individually, they continue to be correct when runconcurrently—in other words, the database prevents all possible race conditions.
+
+#### Actual Serial Execution
+- _VoltDB/H-Store, Redis, Datomic_
+- Every transaction must be small and fast, because it takes only one slow transaction to stall all transaction processing
+
+#### Two-Phase Locking (2PL)
+- Two-Phase Locking is __not__ Two-Phase Commit (2PC)
+
+> Several transactionsare allowed to concurrently read the same object as long as nobody is writing to it. But as soon asanyone wants to write (modify or delete) an object, exclusive access is required
+
+- In 2PL, writers don't just block writers; they also block readers and vice versa.
+
+- Implementation: have two kinds of lock - _shared mode_ and _exclusive mode_. Read will acquire shared mode lock and can be shared by other shared mode lock, write will acquire exclusive mode lock which cannot be shared by other locks. If a transaction needs to first read then write, it may upgrade shared lock to exclusive lock. As per _deadlock_, database detects it and abort one of the transactions. Then application will retry.
+
+
+#### Serializable Snapshot Isolation (SSI)
