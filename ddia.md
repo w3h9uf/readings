@@ -264,4 +264,23 @@ ZooKeeper to have all nodes registered and keep nodes infos, router will keep up
 - Transaction will handle error by aborting half-finished operations, but more important is to make sure retry transient errors. 
 - For transactions with side effects outside database, those side effects may happen even if the transaction is aborted. use _two-phase commit_ to make sure several different systems eother commit or abort together. 
 
+- Multi-object operations need Atomicity and Isolation (mailbox: insert an new email and update the mailbox unread counts are multi-object operations)
 
+### weak isolation level
+- _serializable_ isolation means that the database guarantees that transactions have the same effect as if they ran _serially_
+- _weak isolation_ exists in many popular relational databases but it’s error-prone
+
+#### Read Committed
+> When reading from the database, you will only see data that has been committed (no dirty reads).
+
+> When writing to the database, you will only overwrite data that has been committed (no dirty writes).
+ 
+ - row-level lock to prevent dirty write
+ - The same lock can be used to prevent dirty read, but will affect read latency. Only reading committed records will solve the issue
+
+#### Snapshot Isolation
+> _Snapshot isolation_ is the most common solution to this problem. The idea is that each transaction reads from a consistent snapshot of the database—that is, the transaction sees all the data that was committed in the database at the start of the transaction.
+
+- a key principle of _snapshot isolation_ is __readers never block writers, and writers never block readers__
+
+- _dirty writes_, _lost updates_ and _write skew_ are three.   common race conditions that can occur when different transactions concurrently try to write to the same object
