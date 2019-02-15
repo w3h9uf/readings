@@ -300,6 +300,13 @@ ZooKeeper to have all nodes registered and keep nodes infos, router will keep up
 - In 2PL, writers don't just block writers; they also block readers and vice versa.
 
 - Implementation: have two kinds of lock - _shared mode_ and _exclusive mode_. Read will acquire shared mode lock and can be shared by other shared mode lock, write will acquire exclusive mode lock which cannot be shared by other locks. If a transaction needs to first read then write, it may upgrade shared lock to exclusive lock. As per _deadlock_, database detects it and abort one of the transactions. Then application will retry.
-
+- Performance for 2PL is worse than weak isolation, partly due to the overhead of acquiring and releasing all those locks, more importantly due to reduced concurrency
+- _predicate lock_: locks that match some search conditions (book meeting room). Predicate lock applies even to objects that do not yet exist in the database, but which might be added in the future (phantoms).
+- For predicate lock, checking for matching locks can be time-consuming. 
+- _index-range locking_ (_next-key locking_)
+  - simplified approximation of predicate locking, to simplify a predicate by making it match a greater set of objects. 
 
 #### Serializable Snapshot Isolation (SSI)
+> On the one hand, wehave implementations of serializability that don’t perform well (two-phase locking) or don’t scalewell (serial execution). On the other hand, we have weak isolation levels that have goodperformance, but are prone to various race conditions (lost updates, write skew, phantoms, etc.).
+
+- SSI is an _optimistic_ concurrency control technique. transaction will continue though there's something potentially dangerous happens. But database will abort the bad commit, only allow serializable transaction commit.
