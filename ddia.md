@@ -310,3 +310,27 @@ ZooKeeper to have all nodes registered and keep nodes infos, router will keep up
 > On the one hand, wehave implementations of serializability that don’t perform well (two-phase locking) or don’t scalewell (serial execution). On the other hand, we have weak isolation levels that have goodperformance, but are prone to various race conditions (lost updates, write skew, phantoms, etc.).
 
 - SSI is an _optimistic_ concurrency control technique. transaction will continue though there's something potentially dangerous happens. But database will abort the bad commit, only allow serializable transaction commit.
+- Basically two things should be detected:
+  - detecting stale MVCC reads (uncommitted write occurred before the read)
+  - detecting writes that affect prior reads (the writes occur after read)
+- since write won't neccessarily block read, SSI is very apealing to read-heavy workloads. While the rate of aborts significantly affects the overall performance.
+
+> _Dirty reads_ - One client reads another client’s writes before they have been committed. The read committed isolation level and stronger levels prevent dirty reads.
+
+> _Dirty writes_ - One client overwrites data that another client has written, but not yet committed. Almost all transaction implementations prevent dirty writes.
+
+> _Read skew (nonrepeatable reads)_ - A client sees different parts of the database at different points in time. This issue is most commonly prevented with snapshot isolation, which allows a transaction to read from a consistent snapshot at one point in time. It is usually implemented with multi-version concurrency control (MVCC).
+
+> _Lost updates_ - Two clients concurrently perform a read-modify-write cycle. One overwrites the other’s write without incorporating its changes, so data is lost. Some implementations of snapshot isolation prevent this anomaly automatically, while others require a manual lock (SELECT FOR UPDATE).
+
+> _Write skew_ - A transaction reads something, makes a decision based on the value it saw, and writes the decision to the database. However, by the time the write is made, the premise of the decision is no longer true. Only serializable isolation prevents this anomaly.
+
+> _Phantom reads_ - A transaction reads objects that match some search condition. Another client makes a write that affects the results of that search. Snapshot isolation prevents straightforward phantom reads, but phantoms in the context of write skew require special treatment, such as index-range locks.
+
+> Weak isolation levels protect against some of those anomalies but leave you, the application developer, to handle others manually (e.g., using explicit locking). Only serializable isolation protects against all of these issues. We discussed three different approaches to implementing serializable transactions:
+
+> Literally executing transactions in a serial order - If you can make each transaction very fast to execute, and the transaction throughput is low enough to process on a single CPU core, this is a simple and effective option.
+
+> _Two-phase locking_ - For decades this has been the standard way of implementing serializability, but many applications avoid using it because of its performance characteristics.
+
+> _Serializable snapshot isolation (SSI)_ - A fairly new algorithm that avoids most of the downsides of the previous approaches. It uses an optimistic approach, allowing transactions to proceed without blocking. When a transaction wants to commit, it is checked, and it is aborted if the execution was not serializable.
