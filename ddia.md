@@ -349,4 +349,8 @@ ZooKeeper to have all nodes registered and keep nodes infos, router will keep up
 
 ### Unreliable Clocks
 
+#### Monotonic v.s. Time-of-Day Clocks
+
+
+### Knowledge, Truth and Lies
 
