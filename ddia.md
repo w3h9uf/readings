@@ -354,3 +354,7 @@ ZooKeeper to have all nodes registered and keep nodes infos, router will keep up
 
 ### Knowledge, Truth and Lies
 
+> The moral of these stories is that a node cannot necessarily trust its own judgment of a situation.A distributed system cannot exclusively rely on a single node, because a node may fail at any time,potentially leaving the system stuck and unable to recover. Instead, many distributed algorithmsrely on a quorum, that is, voting among the nodes (see “Quorums for reading and writing”):decisions require some minimum number of votes from several nodes in order to reduce the dependenceon any one particular node.
+
+- _fencing token_ is used in lock server to prevent multiple clients write corruption
+- _Byzantine fault_: nodes lie, it claims to have recieved a paticular message when in fact it did not.
