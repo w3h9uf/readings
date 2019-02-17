@@ -334,3 +334,19 @@ ZooKeeper to have all nodes registered and keep nodes infos, router will keep up
 > _Two-phase locking_ - For decades this has been the standard way of implementing serializability, but many applications avoid using it because of its performance characteristics.
 
 > _Serializable snapshot isolation (SSI)_ - A fairly new algorithm that avoids most of the downsides of the previous approaches. It uses an optimistic approach, allowing transactions to proceed without blocking. When a transaction wants to commit, it is checked, and it is aborted if the execution was not serializable.
+
+
+## The trouble with distributed systems
+
+### Unreliable Networks
+> UDP is a good choice in situations where delayed data is worthless.
+
+- _unbounded delays_
+- _circuit_ in a telephone network: a fixed amount of reserved bandwidth which nobody else can use while the circuit is established (_bounded delays_). Whereas the packets of a TCP connection opportunistically use whatever network bandwidth is available, while a TCP connection is idle, it doesn't use any bandwidth.
+- Ethernet and IP are packet-switch protocols instead of circuit-switched protocols, thus will suffer from queueing and unbounded delays in the network
+- Why datacenter networks and internet use packet switching? Because they are optimized for bursty traffic. A circuit is good for an audio or video call, which needs to transfer a fairly constant number of bits per second for duration of the call.
+- More generally, you can think of variable delays as a consequence of dynamic resource partitioning. (internet allocated bandwidth dynamically while telephone network has a fixed allocation for each line)
+
+### Unreliable Clocks
+
+
