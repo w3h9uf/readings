@@ -61,6 +61,8 @@ In SSDs, the difference in latencies between random and sequential reads is not 
 
 Though GC is usually background operation, its effects may negatively impact write performance.
 
+Most OS have a *block device* abstraction. It hides an internal disk structure and buffers I/O operations internally, so when we're reading a single word from a block device, the whole block containing it is read. We cannot ignore this constraint while working with disk-resident data structures.
+
 ## On-Disk Structures
 The main limitation and design condition for building efficient on-disk structure is **the smallest unit of disk operation is a block**. We changed the layout of the data structure to take advantage of it.
 Can do this by improving locality, optimizing the internal representation of the structure, and reducing the number of out-of-page pointers.
@@ -70,6 +72,37 @@ B-Trees build upon the foundation of balanced search trees and are different in 
 
 B-Trees consist of multiple nodes. Each node holds up to **N keys** and **N+1 pointers** to the child nodes. These nodes are grouped into three groups: root nodes, internal nodes, leaf nodes.
 
+![B-Tree](image/B-Tree.png)
+
+### Separator Keys
+Keys stored in B-Tree nodes are called *index entries, separator keys* or *divider cells*. They split the tree into subtrees, holding corresponding key ranges. 
+
+![sep_keys](image/separator_keys.png)
+
+B-Tree reserves extra space inside nodes for future insertion and updates, tree storage utilization (*occupancy*) can get as low as 50%.
+
+### B-Tree node splits
+Splits are done by allocating the new node, tranfering half the elements from the splitting node to it, and adding its first key and pointer to the parent node. In this case, we say that key is *promoted*. If the parent node is full and does not have space for the promoted key and pointer to the newly created node, it has to be split as well. As soon as the tree reaches its capacity, root node has to be splitted. (height + 1)
+
+In this way, the way B-Tree grows is from bottom up.
+
+![splits](image/node_splits.png)
+
+![splits_nonleaf](image/node_splits_noleaf.png)
 
 
-Most OS have a *block device* abstraction. It hides an internal disk structure and buffers I/O operations internally, so when we're reading a single word from a block device, the whole block containing it is read. We cannot ignore this constraint while working with disk-resident data structures.
+### B-Tree Node Merges
+If neighboring nodes have too few values, the sibling nodes are merged. This situation is called *underflow*. 
+If two adjacent nodes have a common parent and their contents fit into a single node, their contents should be merged; if their contents do not fit into a single node, keys are redistributed between them to restore balance (*rebalancing*).
+
+![merge](image/nodes_merge.png)
+
+![merge_nonleaf](image/nodes_merge_noleaf.png)
+
+1. Copy all elements from the right node to the left node.
+2. Remove the right node pointer from the parent (or demote it in the case of nonleaf merge)
+3. Remove the right node.
+
+
+
+
