@@ -32,3 +32,44 @@ Index files:
   - *copy-on-write* means modified page, holding the updated version of the record, is written to the new location in the file
 - **store value in order (or out of order)** defines as whether or not the data records are stored in the key order in the pages on disk. Ordering often defines whether or not we can efficiently scan the range of records. However storing data out of order opens up for some write-time optimization.
 
+
+# Chapter 2 B-Tree Basics
+
+## B-Tree alternatives
+
+### Binary Search Tree
+Balanced BST needs frequent balancing, relocating nodes and updating pointers. Increased maintenance consts make BSTs impractical as on-disk data structures.
+
+BST has locality problem, node child ponters may span across several disk pages. 
+BST also have low fanout (2 child) rate, which leads to large depth (more searching time).
+
+So ideally, a type of tree should be 
+1. *high fanout* to improve locality of the neiboring keys;
+2. *low height* to reduce the number of seeks during traversal.
+
+## Disk-Based Structures
+
+### Hard Disk Drives 
+One spining disks, *seeks* increases costs of random reads because they require disk rotation and mechanical head movements to position the read/write head to the desired location. However, once the expensive part is done, reading or writing contiguous bytes (i.e. sequential operations) is relatively cheap.
+The smallest transfer unit of a spinning drive is a *sector*, so when operation is performed, at least an entire sector can be read or written. Sector size typically range from 512 bytes to 4Kb.
+Head positioning is the most expensive part of an operation on the HDD. This is one of the reasons we often hear about the positive effects of *sequential I/O*: reading and writing contiguous memory segments from disk.
+
+### Solid State Drives
+No disk that spins, or head that has to be positioned for the read. SSD is built of *memory cells*, connected into *strings*, string are combined into *arrays*, arrays are combined into *pages*, and pages are combined into *blocks*. Blocks are organized into planes and planes are placed on a *die*. SSDs can have one or more dies.
+
+In SSDs, the difference in latencies between random and sequential reads is not as large. 
+
+Though GC is usually background operation, its effects may negatively impact write performance.
+
+## On-Disk Structures
+The main limitation and design condition for building efficient on-disk structure is **the smallest unit of disk operation is a block**. We changed the layout of the data structure to take advantage of it.
+Can do this by improving locality, optimizing the internal representation of the structure, and reducing the number of out-of-page pointers.
+
+## Ubiquitous B-Trees
+B-Trees build upon the foundation of balanced search trees and are different in that they have higher fanout and smaller height.
+
+B-Trees consist of multiple nodes. Each node holds up to **N keys** and **N+1 pointers** to the child nodes. These nodes are grouped into three groups: root nodes, internal nodes, leaf nodes.
+
+
+
+Most OS have a *block device* abstraction. It hides an internal disk structure and buffers I/O operations internally, so when we're reading a single word from a block device, the whole block containing it is read. We cannot ignore this constraint while working with disk-resident data structures.
