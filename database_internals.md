@@ -103,6 +103,8 @@ If two adjacent nodes have a common parent and their contents fit into a single 
 2. Remove the right node pointer from the parent (or demote it in the case of nonleaf merge)
 3. Remove the right node.
 
+# Chapter 3 File Formats
 
+Data layout is much less important in memory than on disk. 
 
 
