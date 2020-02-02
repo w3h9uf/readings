@@ -111,5 +111,7 @@ Data layout is much less important in memory than on disk.
 - Used by many database to efficiently store variable size records such as strings, binary large objects (BLOBs), etc..
 - Split out pointers and cells into two independent memory regions residing on defferent sides of the page. This means that we only need to reorganize pointers addressing the cells to preserve the order, and deleting a record can be done either by nullifying its pointer or removing it. 
 
+![slotted_page](image/slotted_page.png)
+
 
 
