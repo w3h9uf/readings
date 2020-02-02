@@ -113,5 +113,5 @@ Data layout is much less important in memory than on disk.
 
 ![slotted_page](image/slotted_page.png)
 
-
+### Cell layout
 
