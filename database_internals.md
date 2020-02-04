@@ -115,3 +115,18 @@ Data layout is much less important in memory than on disk.
 
 ### Cell layout
 
+### Combine Cells into Slotted Pages
+
+![slotted_page](image/slotted_page2.png)
+
+Keys can be inserted out of order and their logical sorted order is kept by sorting cell offset pointers in key order. This design allows appending cells to the page with minimal effort.
+
+### Managing Variable-size Data
+Removing an item from the page does not have to remove the actual cell and shift other cells to reoccupy the freed space. Instead, the cell can be marked as deleted and an in-memory availability list can be updated with the amount of freed memory and a pointer to the freed value. When inseritng new cell, we check *availability list* to find if there's a segment to fit. 
+![availability list](image/availability_list.png)
+
+In summary, for B-Tree layout, each node occupies a single page. A page consists of a fixed size header, cell pointer block, and cells. Cells hold keys and pointers to the pages representing child nodes or associated data records. B-Trees use simple pointer hierarchies: page identifiers to locate the child nodes in the tree file, and cell offsets to locate cells within the page.
+
+
+### Checksumming
+is used to identify problems, where files on disk may get damaged or corrupted by software bugs and hardware failures, and avoid propagating corrupt data to other subsystems or even nodes.
