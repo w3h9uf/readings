@@ -130,3 +130,7 @@ In summary, for B-Tree layout, each node occupies a single page. A page consists
 
 ### Checksumming
 is used to identify problems, where files on disk may get damaged or corrupted by software bugs and hardware failures, and avoid propagating corrupt data to other subsystems or even nodes.
+
+Before writing the data on disk, we compute its checksum and write it together with the data. When reading it back, we compute the checksum again and compare it with the written one to see if there's checksum match.
+Page checksums are usually computed on pages and placed in the page header.
+
