@@ -134,3 +134,49 @@ is used to identify problems, where files on disk may get damaged or corrupted b
 Before writing the data on disk, we compute its checksum and write it together with the data. When reading it back, we compute the checksum again and compare it with the written one to see if there's checksum match.
 Page checksums are usually computed on pages and placed in the page header.
 
+
+# Chapter 4 Implementing B-Tree
+
+## Page Header
+
+Page header holds information about the page that can be used for navigation, maintenance, and optimization, including:
+- flags describing page contents and layout
+- number of cells in the page
+- lower and upper offsets marking the empty space
+- other metadata
+
+### Magic Number
+
+### Sibling links
+Some implementations store forward and backward links, pointing to left and right sibling pages. Overheads on updating sibling links during splits and merges. Addintional locking may be required. 
+
+### Rightmost Pointers
+The last pointer, stored separately in header, is not paired with any keys
+![rightmost pointer](image/rightmost_pointer.png)
+
+On rightmost child split, rightmost pointer has to be reassigned.
+
+### Node High Keys
+the highest possible key that can be present in the subtree under the current node. (used by PostgreSQL). In this case, number of keys and pointers are equal. You don't have to store rightmost pointer separately.
+
+### Overflow Pages
+The default page size is 4K, and after inserting a few values, its data size has grown over 4K. Instead of allowing arbitrary sizes, nodes are allowed to grow in 4K increments, so we allocate a 4K extension page and link it from the original one. The linked page extensions are called *overflow pages*
+
+Extra bookkeeping is needed for overflow pages. 
+
+## Propagating Splits and Merges
+
+### Breadcrumbs
+contains references to the nodes followed from the root and are used to backtrack them in reverse when propagating splits or merges. Stack is often used.
+
+## Optimizations
+
+### Rebalancing
+Some B-Tree attempts to postpone split and merge operations to amortize their costs by rebalancing elements within the level, or moving elements from more ossupied nodes to less occupied ones for as long as possible before finally performing a split or merge.
+
+### Right-Only Appends
+
+### Compression
+
+### Vacuum and Maintenance
+
