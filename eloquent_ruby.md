@@ -145,6 +145,139 @@ def total_word_length
 end
 ```
 
+### `!` for collection mutation
+```
+a = [1, 2, 3]
+# return a copy of reverse array
+a.reverse
+
+# mutate array, reverse in place
+a.reverse!
+
+# the same for sort v.s. sort!
+```
+
+> Don’t, however, get the idea that only methods with names ending in ! will change your collection. Remember, the Ruby convention is that an exclamation point at the end of a method name indicates that the method is the dangerous or surprising version of a pair of methods. Since making a modified copy of a collection seems very safe while changing a collection in place can be a bit dicey, we have sort and sort!. 
+
+## Keys in hashes are ordered
+Ordered in the way it is created, later added items will appear at the end. Changing values won't change the key order.
+
+
+> There are two reasons for this preference for the bare collections over more specialized classes. First, the Ruby collection classes are so powerful that often there is no practical reason to create a custom-tailored collection simply to get some specialized feature. Frequently, a call to each or map is all you really need. And second, all things being equal, Ruby programmers actually prefer to work with generic collections. To the Ruby way of thinking, one less class is one less thing to go wrong. In addition, I know exactly how an array is going to react to a call to each or map, which isn’t necessarily true of the SpecializedCollectionOfStuff. When the problem is complexity, the cure might just be simplicity.
+
+## caveats
+take care when adding new elements well past the existing end of array
+```
+array = []
+# 123457 new elements will be created with 123456 of them nil
+array[123456] = 1
+```
+
+Also remember there is a `Set` class to use!
+
+
+# Chpater 4 Smart Strings
+
+Embed arbitrary expression in a __double quoted string__ by enclosing the expression between `#{` and `}`.
+```
+first_name = "Joe"
+last_name = "Biden"
+puts "The name is #{first_name} #{last_name}"
+```
+
+Escape
+```
+str = '"Stop", she said, "I can\'t live without \'s and "s."'
+
+# %q to have same spirit of single quoted string
+str = %q{"Stop", she said, "I can't live without 's and "s."}
+str = %q("Stop", she said, "I can't live without 's and "s.")
+str = %q<"Stop", she said, "I can't live without 's and "s.">
+
+# %Q to have same spirit as double quoted string
+str = %Q<The time in now #{Time.now}>
+
+```
+
+Span string multi-lines
+```
+str = "a long
+string"
+
+str = %q{a long
+string}
+
+puts str
+# will show: a long 
+#            string
+
+str = %Q<a long \
+string>
+puts str
+# will show: a long string
+
+str = <<~P
+ Here is how to 
+ construct a string 
+ that span across multiple 
+ lines!
+P
+# can also use <<-P but that will leave the identation as it is.
+```
+
+Decision: it seems `%Q{}`  will be the best way to write complex string literals while single quoted string is the simplist.
+
+## String API
+```
+# strip, lstrip, rstrip
+' hello'.lstrip   # ->'hello'
+' world '.strip    # ->'world'
+
+# chomp to remove one line-terminating \n
+# chop to remove trailing character
+'hello\n\n\n'.chomp.   # 'hello\n\n'
+'hello'.chop.   # 'hell'
+
+# swapcase
+
+# sub to substitute first occurance
+'It was warm outside.'.sub('warm', 'cold')
+
+# gsub to substitute all occurances
+'yes yes'.gsub('yes', 'no')
+
+'hello world'.split   # ["hello", "world"]
+'1234:567:89'.split(':') # ["1234". "567", "89"]
+
+# trailing ! after method will mutate the string instead of return a modified copy
+
+
+"Here we go".index("go") # returns 2
+```
+
+## play with characters and bytes
+```
+str = 'hello'
+
+str.each_char {|c| puts c}
+
+str.each_byte {{b} puts b}
+
+str2 = "hello
+world"
+
+str2.each_line { |l| puts l}
+```
+
+## variables are assigned by ref
+```
+str = "apple"
+str2 = str
+str.upcase!
+puts str2  # APPLE
+```
+
+
 
 
 
