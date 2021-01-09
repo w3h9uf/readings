@@ -278,6 +278,71 @@ puts str2  # APPLE
 ```
 
 
+# RegEx
+```
+[0-9a-zA-Z]
+
+\d matches any digits
+\w matches any letterm number or underscore
+
+A|B matches either A or B
+
+\d:\d (AM|PM) matches time format 11:59 AM
+```
+
+RegEx in Ruby
+```
+# surround with forward slashes will make a RegEx
+puts /\d:\d (AM|PM)/ =~ '10:23 AM'  # prints 0, means regex matches starting from index 0
+
+puts /AM/ =~ '10:23 AM' # prints 6 means regex matches starting from index 6
+
+puts /AM/ =~ '10:23' # prints nothing means regex does not match
+
+# trailing i after regex will disable case sensitivity
+puts /AM/i =~ 'am' # prints 0
+
+# sub() and gsub can take a regex
+
+# \A only matches start of a string
+# \z only matches end of a string
+
+# ^ matches start of a string or start of new line in a string
+# $ matches end of a string or end of a line in a string
+
+# trailing m will disable the fact that .* cannot match multiple lines
+```
+
+# Chapter 6 Symbols in Ruby
+
+There can only ever be one instance of any given symbol
+
+```
+a = :all
+b = a
+c = :all
+
+a == c # true
+a === c # true
+```
+
+Symbols are immutable
+
+In ruby, hash key are also immutable. There are sepcial defenses built in to guard against changing of hash keys.
+
+```
+# use to_s to turn a symbol into string
+str = :all.to_s
+
+# use to_sym to turn a string to symbol
+the_symbol = 'all'.to_sym
+```
+
+_Use string for data, treat symbol as 'stand for', a const expression_
+
+
+
+
 
 
 
