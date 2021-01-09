@@ -342,6 +342,44 @@ _Use string for data, treat symbol as 'stand for', a const expression_
 
 
 
+# Chapter 7 Everything is an object
+
+class inheritance
+```
+class Dog < Animal
+# ...
+end
+```
+
+Everything is an object, including `nil`
+
+```
+puts nil.class # NilClass
+puts nil.class.class # Class
+```
+
+All classes is inherited fron `Object`, `Object` bestows about fifty methods to its children.
+
+
+`eval("some command")` to run the command as Ruby
+
+Class methods are public by default, can expliciylt make them `private` and `protected`
+
+
+`to_s` is a method of `Object` so if you `puts SomeClass`, `to_s` will get called to convert `SomeClass` to string and print it. You can override `to_s` in `SomeClass` to have your own printing format
+
+> In a very real way, the Object class is the glue that binds Ruby together and lends the language its simple elegance.
+
+
+# Chapter 8 Dynamic Typing
+
+Ruby does not judge an object by its class hierarchy. If an object has the right methods, then it's the right kind of object. so called __Duck Typing__
+
+
+> When you are coding, anything that reduces the number of revolving mental plates is a win. From this perspective, a typing system that you can sum up in a short phrase, “The method is either there or it is not,” has some definite appeal. If the problem is complexity, the solution might just be simplicity.
+
+
+
 
 
 
