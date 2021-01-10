@@ -380,6 +380,186 @@ Ruby does not judge an object by its class hierarchy. If an object has the right
 
 
 
+# Chapter 9 Write Specs!
+
+## Test::Unit
+
+```
+require 'test/unit'
+
+class DocumentTest < Test::Unit::TestCase
+ # setup and teardown are called for each test case.
+ def setup
+  @text = 'a lot of words'
+  doc = Document.new('test', 'author', @text)
+ end
+ 
+ def teardown
+  # can close database connections, close socket, etc.
+ end
+ 
+ def test_doc_holds_onto_contents
+  assert_equal @text, @doc.content, 'Check contents are still there'
+ end
+ 
+ def test_doc_can_return_words_in_array
+  text = 'some more words'
+  doc.Document.new('test', 'author', text)
+  assert @doc.words.include?('a')
+  assert @doc.words.include?('lot')
+  assert @doc.words.include?('of')
+  assert @doc.words.include?('words')
+ end
+ 
+ def test_word_count_is_correct
+  asssert_equal 4, doc.word_count, 'Word count is correct'
+ end
+end
+```
+
+More assertions
+
+```
+assert_not_equal
+assert_nil
+assert_not_nil
+
+assert_match /\d\d/, '23'
+
+assert_instance_of String, 'hello'
+
+# assert code will raise an exception
+assert_raise ZeroDivisionError do
+ x = 1/0
+end
+
+# assert code will not raise exception
+assert_nothing_thrown do 
+ x = 1/2
+end
+
+
+```
+
+## Don't test it, spec it!
+
+> RSpec tries to weave a sort of pseudo-English out of Ruby: The code above isn’t a test, it’s a description. 
+
+Use `spec` to run your ruby spec files
+```
+spec document_spec.rb
+
+# run all spec files in a whole directory tree (file will naming format <file>_spec.rb)
+spec .
+```
+
+Example of spec file
+```
+require 'document'
+
+describe Document do
+ # similar to setup in Test::Unit, run before each test case
+ before :each do 
+  @text = 'a lot of wrds'
+  @doc = Document.new('test', 'author', @text)
+ end
+ 
+ after :each do
+  # run after each test case
+ end
+ 
+ # before :all and after :all to run before or after all test cases
+ 
+ it 'should hold on the the contents' do
+  @doc.content.should == @text
+ end
+ 
+ it 'should know which words it has' do
+  @doc.words.should include('a')
+  @doc.words.should include('lot')
+  @doc.words.should include('of')
+  @doc.words.should include('word')
+ end
+ 
+ it 'should know how many words it contains' do
+  @doc.word_count.should == 4
+ end
+ 
+end
+```
+
+### Mocking in spec 
+
+stub and mock
+```
+class PrintableDocument < Document
+ def print( printer )
+  return 'Printer unavailable' unless printer.available?
+  printer.render( '#{title}\n' )
+  printer.render( 'By #{author}\n' )
+  printer.render( context )
+  'Done'
+ end
+end
+
+describe PrintableDocument do 
+ before :each do 
+  @text = 'a lot of wrds'
+  @doc = Document.new('test', 'author', @text)
+ end
+ 
+ # stub
+ it 'should_know how to print itself' do
+  stub_printer = stub :available? => true, :render =>nil
+  @doc.print( stub_printer ).should == 'Done'
+ end
+ 
+ it 'should return proper string if printer is not available' do
+  stub_printer = stub :available? =>false, :render => nil
+  @doc.print( stub_printer ).should == 'Printer unavailable'
+ end
+ 
+ # mock
+ it 'should know how to print itself with mock' do
+  mock_printer = mock('Printer')
+  mock_printer.should_receive(:available?).and_return(true)
+  mock_printer.should_receive(:render).exactly(3).times
+  @doc.print(mock_printer).should == 'Done'
+ end
+ 
+end
+```
+
+
+```
+# stub! can be used to stub out methods on any regular object
+str = 'short string'
+str.stub!(:length).and_return(10000)
+```
+
+### shoulda
+```
+require 'test/unit'
+require 'shoulda'
+
+class DocumentTest < Test::Unit::TestCase
+ context 'a basic document class' do
+  def setup
+   @text = 'a lot of words'
+   doc = Document.new('test', 'author', @text)
+  end
+
+  should 'hold on to the contents' do
+   assert_equal @text, @doc.content, 'Check contents are still there'
+  end
+ end
+end
+```
+
+MiniTest is also something to explore
+
+
+> Unit tests should run quick with the setup that every developer has. They are your first line of defense, and in order to be any good they must be run often.
 
 
 
