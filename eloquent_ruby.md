@@ -571,4 +571,42 @@ MiniTest is also something to explore
 
 The cost of defining a new method in Ruby is very low. Prefer having many fine-grained method than fewer monilith methods.
 
+# Chapter 11 Operator Overloading
+
+Ruby embraces operator overloading!
+
+```
+sum = first + second 
+# is actually doing the following underneath
+sum = first.+(second)
+```
+
+```
+class Document
+ # Binary operator
+ def +(other)
+  Document.new( title, author, "#{content} #{other.cotent}")
+ end
+ 
+ # Unary operator
+ def !
+  Document.new(title, author, "It is not true: #{content}")
+ end
+ 
+ def +@
+  Document.new(title, author, "I'm sure that #{content}")
+ end
+end
+
+chocalate = Document.new('chocalate', 'me', 'chocalate is the best!')
+no_chocalate = !chocalate
+
+surely_chocalate = +chocalate
+```
+
+
+Operators that can not be overloaded: `not`, `and`, `or`, `||`, `&&`
+
+
+
 
