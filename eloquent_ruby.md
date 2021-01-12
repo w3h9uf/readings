@@ -563,5 +563,12 @@ MiniTest is also something to explore
 
 
 
+# Chapter 10 Construct Class
+
+`attr_reader` for readable data members
+
+`initialize` for constructor
+
+The cost of defining a new method in Ruby is very low. Prefer having many fine-grained method than fewer monilith methods.
 
 
