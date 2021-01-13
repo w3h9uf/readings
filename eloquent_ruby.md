@@ -707,4 +707,93 @@ end
 By default, `eql?` will call `equal?`. The default hash method returns `object_id` of the object, which is guranteed to be unique. 
 
 
+# Chapter 13 Singleton and class methods
+
+stubs are singletons
+
+```
+stub_font = stub :size => 14, :name => 'Courier'
+stub_printer = stub :available? => true, :render => nil
+
+puts stub_printer.class # Spec::Mocks::Mock
+puts stub_font.class # Spec::Mocks::Mock
+```
+
+Define singleton
+
+```
+str = 'hello'
+
+def str.class
+ 'secret'
+end
+
+puts str.class
+```
+
+```
+stub_printer = Object.new
+
+class << stub_printer
+ def available?
+  true
+ end
+ 
+ def render
+  nil
+ end
+end
+```
+You really define a singleton by defining a method for this object
+
+> So how does Ruby pull off the singleton method trick? The key is that every Ruby object carries around an additional, somewhat shadowy class of its own. As you can see in Figure 13-1, this more or less secret class—the singleton class—sits between every object and its regular class.3 The singleton class starts out as just a methodless shell and is therefore pretty invisible.4 It’s only when you add something to it that the singleton class steps out of the shadows and makes its existence felt.
+> Since it sits directly above the instance, the singleton class has the first say on how the object is going to behave, which is why methods defined in the singleton class will win out over methods defined in the object’s regular class, and in the superclasses.
+
+![singleton](image/ruby_singleton.png)
+
+
+```
+# you can also define singleton like this
+singleton_class = class << stub_printer
+ self
+end
+```
+
+A powerful usage of singleton method is it can be used to define __class methods__. 
+
+```
+class Person
+end
+
+def Person.describe
+ puts "self is #{self}"
+ puts "and its class is #{self.class}"
+end
+
+```
+
+```
+# defining class methods
+class Document
+ class << self
+  def find_by_name (name)
+   # ...
+  end
+  
+  def find_by_id(doc_id)
+   # ...
+  end
+ end
+ 
+ def self.who_am_i
+  puts "The value of self is #{self}"
+ end
+end
+```
+
+> Remember, when you define a class method, it is a method attached to a class. The instances of the class will not know anything about that method. 
+
+
+
+
 
