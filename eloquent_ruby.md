@@ -608,5 +608,103 @@ surely_chocalate = +chocalate
 Operators that can not be overloaded: `not`, `and`, `or`, `||`, `&&`
 
 
+# Chapter 12 Object Equality
+
+4 equality sign: `equal?`, `eql?`, `==`, `===`
+
+`equal?` will always compare if two variable are referenced to the same object, if not it will always return `false`. __Do not overload `equal?`__
+
+`==` for everyday use. By default, `==` will do the same comparison as `equal?`. It needs to be overloaded to have customized comparison.
+
+```
+class Person
+ attr_reader :first_name, :last_name
+ 
+ def initialize(first_name, last_name)
+  @first_name = first_name
+  @last_name = last_name
+ end
+ 
+ def ==(other)
+  return true if other.equal?(self)  # this will speed up comparison if two objects are referencing to same thing
+  return false unless other.instance_of?(self.class)
+  first_name == other.first_name && last_name == other.last_name
+ end
+end
+```
+
+`kind_of?` to know if the class is subclass of another one. 
+
+```
+class Person
+ # ...
+ def ==(other)
+  return true if other.equal?(self)
+  return false unless other.kind_of?(self.class)
+  first_name == other.first_name && last_name == other.last_name
+ end
+end
+
+class SalesPerson < Person
+end
+
+puts 'two person are equal' if Person.new('first', 'last') == SalesPerson.new('first', 'last')
+```
+
+```
+# take advantage of dynamic typing
+class Person
+ # ...
+ def ==(other)
+  return true if other.equal?(self)
+  return false unless other.respond_to?(:first_name)
+  return false unless other.respond_to?(:last_name)
+  first_name == other.first_name && last_name == other.last_name
+ end
+end
+```
+
+equality should meet the principle of __symmetry__ and __transitive property__
+
+
+## Triple Equals for case statements
+
+```
+location = 'area 81'
+
+case location
+when /area.*/
+ # ...
+when /rosewell.*/
+ # ...
+else
+ # ...
+end
+```
+
+By default, `===` calls `==`. 
+
+## Hash tables and `eql?`
+
+When you want to have an object as hash key, you need to define `eql?` and `hash`.
+
+```
+class Person
+ # ...
+ 
+ def hash
+  first_name.hash ^ last_name.hash
+ end
+ 
+ def eql?(other)
+  return true if other.equal?(self)
+  return false unless other.kind_of?(self.class)
+  first_name == other.first_name && last_name == other.last_name
+ end
+end
+```
+
+By default, `eql?` will call `equal?`. The default hash method returns `object_id` of the object, which is guranteed to be unique. 
+
 
 
