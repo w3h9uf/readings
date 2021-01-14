@@ -794,6 +794,112 @@ end
 > Remember, when you define a class method, it is a method attached to a class. The instances of the class will not know anything about that method. 
 
 
+# Chapter 14 Class instance variable (class level data)
+
+## Class variable
+Class variable starts with `@@`
+
+> If the class variable is not defined in the current class, Ruby will go looking up the inheritance tree for it. 
+
+class variable could lead to ambiguity, don't use it. Use class instance variable instead.
+
+## Class instance variable
+
+```
+class Document
+ 
+ @default_font = :times
+ 
+ def self.default_font=(font)
+  @default_font = font
+ end
+ 
+ def self.default_front
+  @default_font
+ end
+ 
+end
+
+Document.default_font = :arial
+```
+
+Above can be simplified as 
+
+```
+class Document
+ @default_font = :times
+ 
+ # This will replace self defined getter and setter
+ class << self
+  attr_accessor :default_font
+ end
+end
+```
+Essentially, things defined in `class << self` block is class level thing, including variables and methods
+
+# Chapter 15 Use Modules as Name Spaces
+
+> A Ruby module is the container part of a class without the factory. You can’t instantiate a module, but you can put things inside of a module. Modules can hold methods, constants, classes, and even other modules.
+
+```
+module Company
+ class Assets
+  ...
+ end
+ 
+ class Building
+  ...
+ end
+ 
+ class Employee
+  ...
+ end
+ 
+ # module can be nested 
+ module Department
+  ...
+ end
+end
+
+# referencing Assets
+Company::Assets
+
+include Company
+b1 = Building.new(...)
+```
+
+
+Module can be home for utility methods
+
+```
+module Company
+ 
+ # the `self` is very important, it means it's a module method
+ def self.name
+  'company'
+ end
+end
+
+company_name = Company.name
+```
+
+Module can be spread out to multiple files.
+
+Module is also an object
+
+```
+the_module = Company
+
+a = the_module::Employee.new(...)
+```
+
+> So when should you create a name space module and when should you let your classes go naked? An easy rule of thumb is that if you find yourself creating a lot of names that all start with the same word, perhaps TonsOTonerPrintQueue and TonsOTonerAdministration, then you just may need a TonsOToner module.
+
+
+
+> To underscore the idea that a little bit of module goes a long way, consider DataMapper. DataMapper is a database interface library similar to ActiveRecord. In about 7,500 lines of pretty heavy-duty code, the core of DataMapper uses primarily a three- and occasionally four-level module hierarchy. If DataMapper can limit itself to a very shallow, manageable module structure and still talk to MYSQL, Postgres, and SQLite, chances are pretty good that a modest handful of modules will work for your project too.
+
+
 
 
 
