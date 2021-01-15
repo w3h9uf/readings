@@ -1025,4 +1025,27 @@ puts doc.include?('long')
 Do not mutate underlying collection in iterator functions. Soley work on the current item. 
 
 
+# Chapter 18 Executed aournd with a block
 
+```
+class SomeApplication
+ def do_something
+  with_logging('load') { @doc = Document.load('resume.txt') }
+  
+  # ...
+  
+  with_logging('save') { @doc.save }
+ end
+ 
+ def with_logging(description)
+  begin
+   @logger.debug( "Start #{description}" )
+   yield
+   @logger.debug( "Completed #{description}" )
+  rescue
+   @logger.error( "#{description} failed!" )
+   raise
+  end
+ end
+end
+```
