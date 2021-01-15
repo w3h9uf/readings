@@ -967,5 +967,62 @@ calling `c.common_method` will call the function from `module2`
 
 
 
+# Chapter 17 Use blocks to iterate
+
+> Ruby convention is to name the main iterator of your class `each`
+
+Creating methods that use blocks. `yield`
+```
+class Document
+ def each_word
+  index = 0
+  while index < @content.size
+   yield( @content[index] )
+   index += 1
+  end
+ end
+end
+
+d = Document.new('a long document')
+d.each_word {|word| puts word}
+```
+
+```
+def do_something
+ yield if block_given?
+end
+
+do_something do
+ puts 'hello'
+end
+
+do_something { puts 'hello'}
+```
+
+Minxin with `Enumerable` module to enhance your class functioanlity
+
+```
+class Document
+ include Enumerable
+ 
+ # !! must have each method defined to have features of Enumerable
+ def each
+  words.each { |word| yield( word ) }
+ end
+end
+
+d = Document.new('a long doc')
+puts doc.include?('long')
+# to_a (to array) is available
+# find, find_all are available
+# each_cons
+# each_slice
+```
+`Enumerable` adds ~40 methods to your class
+
+`Enumerator` class
+
+Do not mutate underlying collection in iterator functions. Soley work on the current item. 
+
 
 
