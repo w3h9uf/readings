@@ -901,5 +901,71 @@ a = the_module::Employee.new(...)
 
 
 
+# Chapter 16 Use module as mixins
+
+> When you include a module into a class, the module’s methods magically become available to the including class.
+
+> The Ruby jargon is that by including a module in a class you have mixed it in to the class. We say that the module itself, WritingQuality in this case, is a mixin module. 
+
+```
+module Common
+ def common_method
+ end
+end
+
+class Company
+ include Common
+end
+
+class Person
+ include Common
+end
+
+c = Company.new
+c.common_method
+
+p = Person.new
+p.common_method
+```
+
+Include a module to make its methods the class methods
+
+```
+class Company
+ class << self
+  include Common
+ end
+end
+
+Company.common_method
+```
+
+Above can be simplified as 
+
+```
+class Company
+ extend Common
+end
+```
+
+> When you mix a module into a class, Ruby rewires the class hierarchy a bit, inserting the module as a sort of pseudo superclass of the class. The module gets interposed between the class and its original superclass.
+
+![module mixin](image/module_mixin.png)
+
+Because of the heirarchy change, you can also override module methods in your class and subclasses.
+
+Module included first will have higher position in heirarchy. So if `module1` and `module2` both have `common_method`. 
+
+```
+class Company
+ include module1
+ include module2
+end
+```
+
+calling `c.common_method` will call the function from `module2`
+
+
+
 
 
