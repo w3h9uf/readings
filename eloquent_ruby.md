@@ -1091,4 +1091,37 @@ class Document
 > you should keep in mind the stuff that you might be unconsciously dragging along with your blocks.
 
 
+# Chapter 20 Hooks
+
+## `inherited` for class inheritance
+```
+class BaseClass
+ def self.inherited (new_subclass)
+  puts "#{new_subclass} is now a subclass of #{self}"
+ end
+end
+
+class ChildClass < BaseClass
+end
+# this will print "ChildClass is now a subclass of BaseClass"
+```
+
+## `included` for module include
+```
+module SimpleModule
+ def self.included(host_class)
+  puts "Hey, I've been included in #{host_class}"
+ end
+end
+```
+
+## `at_exit` hook gets called before Ruby interpreter exits. 
+```
+at_exit do
+ puts 'bye'
+end
+```
+
+`method_missing` to track methods being added to a class
+`trace_var` to track changes to global variables
 
