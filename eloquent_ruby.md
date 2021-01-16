@@ -1049,3 +1049,46 @@ class SomeApplication
  end
 end
 ```
+
+> In fact, exception handling is even more important with execute around than it is with iterators, because execute around is all about guarantees. The whole idea of execute around is that the caller is guaranteed that this will happen before the code block fires and that will happen after. Don’t let some stray exception sully the reputation of your method for absolutely, positively getting the job done.
+
+> Execute around suggests that you build a method that takes a block; inside of that method you execute whatever code needs executing before and after you call the block.
+
+
+# Chapter 19 Save blocks to execute later
+
+## Explicit blocks
+```
+def run_that_block( &that_block )
+ puts 'About to run the block'
+ that_block.call if that_block
+ puts 'Done running the block'
+end
+```
+
+## Instant block objects
+```
+class Document
+ DEFAULT_LOAD_LISTNER = lambda do |doc, path|
+  puts "Loaded: #{path}"
+ end
+ 
+ DEFAULT_SAVE_LISTNER = lambda do |doc, path|
+  puts "Saved: #{path}"
+ end
+ 
+ attr_accessor :title, :author, :content
+ 
+ def initialize( title, author, content='' )
+  @title = title
+  @author = author
+  @content = content
+  @save_listner = DEFAULT_SAVE_LISTNER
+  @load_listner = DEFAULT_LOAD_LISTNER
+ end
+```
+
+> you should keep in mind the stuff that you might be unconsciously dragging along with your blocks.
+
+
+
