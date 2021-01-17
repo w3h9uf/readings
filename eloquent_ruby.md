@@ -1125,3 +1125,92 @@ end
 `method_missing` to track methods being added to a class
 `trace_var` to track changes to global variables
 
+
+
+
+
+# Chapter 21 `method_missing` for flexible error handling
+
+> When Ruby fails to find a method, it turns around and calls a second method. This second call, to a method with the somewhat odd name of method_missing, is what eventually generates the exception: It’s the default implementation of method_missing, found in the Object class2 that raises the NameError exception.
+
+```
+class RepeatBackToMe
+ def method_missing(method_name, *args )
+  puts "Hey, you just called the #{method_name} method"
+  puts "With these arguments: #{args.join(' ')}"
+  puts But there ain't no such method"
+ end
+end
+```
+
+
+`const_missing` for flexible error handling for constant that does not exist.
+
+```
+class Document
+ def self.const_missing( const_name )
+  msg = %Q{
+   You tried to reference the constant #{const_name}
+   There is no such constant in the Document class.
+  }
+  raise msg
+ end
+end
+```
+
+> you don’t want to use it unless you really need it. The garden-variety Ruby error handling will suffice for about 99.9% of all of your misspelled or misplaced methods
+
+> keep in mind that the penalty for screwing up in method_missing and const_missing can be pretty high
+
+
+# Chapter 22 `method_missing` for delegation
+
+```
+class SuperSecreteDocument
+ def initialize(original_document, time_limit_seconds)
+  @original_document = original_document
+  @time_limit_seconds = time_limit_seconds
+  @create_time = Time.now
+ end
+ 
+ def time_expired?
+  Time.now - @create_time >= @time_limit_seconds
+ end
+ 
+ def check_for_expiration
+  raise 'Document no longer available' if time_expired?
+ end
+ 
+ def method_missing(name, *args)
+  check_for_expiration
+  @original_document.send(name, *args)
+ end
+end
+```
+
+To delegate, own the target object as data variable, implement `method_missing` to invoke the corresponding method of target object. In this way you can save lots of code copying methods from target object.
+
+`super` to call the same method of parent class.
+
+
+## delegate.rb
+
+There is a library to achieve delegation in a even simpler way.
+
+```
+require `delegate`
+
+class DocumentWrapper < SimpleDelegator
+ def initialize( real_doc )
+  super( real_doc )
+ end
+end
+```
+
+
+
+
+
+```
+
+
