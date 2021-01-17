@@ -1209,8 +1209,67 @@ end
 
 
 
-
+# Chapter 23 `method_missing` for flexible APIs
 
 ```
+# create unlimited APIs for replacing words in text.
+# e.g. replace_name will replace NAME 
+#      replace_city will replace CITY, etc.
+class FormLetter < Document
+ def replace_word( old_word, new_word )
+  @content.gsub!( old_word, "#{new_word}" )
+ end
+ 
+ def method_missing( name, *args )
+  string_name = name.to_s
+  return super unless string_name =~ /^replace_\w+/
+  old_word = string_name.split('_')[1].upcase
+  replace_word( old_word, args.first )
+ end
+```
+
+Use `method_missing` is likely to mess up `respond_to?`: The 'method' created by `method_missing` will still have `respond_to?` return false since those methods are not real methods of this class.
+
+
+`OpenStruct` uses this technique.
+
+
+# Chapter 24 Open class (monkey patching)
+
+> Ruby’s open classes means that you can change the behavior of any class at any time. You can add new methods. You can replace the code behind an existing method. You can even delete methods altogether. 
+
+In Ruby when you write another class with same name of some exsiting class, you are not defining a new class, you are modifying the existing class! Including adding new methods and overriding existing methods!
+
+You can also improve (add patches to) existing methods. 
+
+Renaming methods with `alias_method`
+```
+class Document
+ def word_count
+  words.size
+ end
+ 
+ alias_method :number_of_words, :word_count
+ # alias_method will give a fresh copy of word_count, so if word_count is changed below this line, number_of_words won't change along with it.
+ alias_method :size_in_words, :word_count
+end
+```
+
+Open class allows you to change data member visibility, e.g. `private` to `public`, remove method by `remove_method`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
