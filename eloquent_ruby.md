@@ -1286,6 +1286,44 @@ class Document
 ```
 
 
+# Chapter 26 Create classes that modify their subclasses
+
+Class modifying methods
+
+```
+# There will lots of subclasses of StructuredDocuments, you want an easy way to define methods for those subclasses
+
+class StructuredDocument
+ def self.paragraph_type( paragraph_name, options )
+  name = options[:font_name] || :arial
+  size = options[:font_size] || 12
+  emphasis = options[:font_emphasis] || :none
+  
+  # define_method takes argument as the to be defined method name, execute a block for method implementation.
+  define_method(paragraph_name) do |text|
+   paragraph = Paragraph.new( name, size, emphasis, text )
+   self << paragraph
+  end
+ end
+ 
+end
+
+# Then for subclasses, you can do: 
+class Instruction < StructuredDocument
+ paragraph_type( :introduction,
+  :font_name => :arial,
+  :font_size => 18,
+  :font_emphasis => :italic)
+  
+ # calling the class method above is the same as defining a method called introduction
+ #  def introduction(text)
+ #    p = Paragraph.new(:arial, 18, :italic)
+ #    self << p
+ #   end
+end
+
+```
+
 
 
 
