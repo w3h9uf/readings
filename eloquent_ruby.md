@@ -1258,8 +1258,32 @@ end
 Open class allows you to change data member visibility, e.g. `private` to `public`, remove method by `remove_method`
 
 
+# Chapter 25 Create self-modifying class
+
+> Ruby classes are defined piecemeal, one step—or method—at a time. When Ruby sees that initial `class LessEmpty`, it creates a new and completely empty class. It then executes the class body, the code between the class statement and the final end. Whatever is inside the class definition—be it an if or a puts or a method defining def—simply gets executed in turn.
 
 
+Above means you can put programming logic into class definition
+```
+class Document
+ def save( path )
+  File.open( path, 'w' ) do |f|
+   f.puts( encrypt( @title ))
+   f.puts( encrypt( @author ))
+   f.puts( encrypt( @content )
+  end
+  
+  if ENCRYPTION_ENABLED
+   def encrypt( string )
+    string.tr( 'a-zA-Z', 'm-za-lM-ZA-L')
+   end
+  else
+   def encrypt( string )
+    string
+   end
+  end
+ end
+```
 
 
 
