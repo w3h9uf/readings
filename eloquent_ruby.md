@@ -1325,9 +1325,15 @@ end
 ```
 
 
+# Chapter 27. Invent Internal DSLs
+
+__Domain Specific Language__
+
+> This is the way that many Ruby internal DSLs are born: You set out to build a helpful class with a good API, and gradually that API gets so good that it forgets that it’s just an API. This is also where many Ruby APIs finish, which is fine since there is nothing wrong with a really good, natural-feeling, almost DSL-style API. Sometimes, however, you want to go further. You might want to take the next step if you need to write a lot of scripts, if there are a lot of programmers who will need to use your utility.
 
 
 
+# Chapter 28. External DSLs for flexible syntax
 
 
 
