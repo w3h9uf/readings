@@ -33,3 +33,11 @@ This will generate a db/migrate file. Run `rails db:migrate` to udpate database.
 
 `rails console` neat tool with DSL to query database.
 
+
+## Guard automated test
+With `Guardfile`, you can specify which test to run for which file change. 
+`bundle exec guard init` to init Guardfile
+`bundle exec guard` to start automated test
+
+
+
