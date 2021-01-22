@@ -26,6 +26,8 @@ Change Gemfile, `bundle install --without production` for reinstall the gems
 
 This will generate a db/migrate file. Run `rails db:migrate` to udpate database.
 
+`rails destroy <command>` will undo the generated code by `rails generate`.
+
 
 `rails console` neat tool with DSL to query database.
 
