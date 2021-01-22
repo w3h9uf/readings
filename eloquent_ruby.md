@@ -1335,6 +1335,8 @@ __Domain Specific Language__
 
 # Chapter 28. External DSLs for flexible syntax
 
+> Sometimes the price of regular expressions can get too high. The problem is that regular expressions don’t really scale that well.
+
 
 
 
