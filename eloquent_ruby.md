@@ -1339,6 +1339,52 @@ __Domain Specific Language__
 
 
 
+# Chapter 29 Package your programs as gems
+
+> Once you get past the occasional pet project or the odd bit of experimental programming, there are really only two kinds of software projects: those that ship and those that no one cares about. Shipping software, whether to paying customers or to a grateful open source community, is the ultimate goal of virtually every programmer.
+
+`gem install <gem-package>` to install gem
+
+> It turns out that the gem file is just a TAR file.
+
+> if you wanted to release the Document class as a gem,6 you would need to create a directory structure
+
+![gem dir structure](image/gem_dir.png)
+
+- `lib/` to hold all source code, main file should be directly under `lib/`, other files should be in a subdir
+- `test/` or `spec/` to hold tests
+- `*.gemspec` for gem metadata, e.g. specify dependencies, 
+
+
+`gem build document.gem` 
+`gem install document-1.0.1.gem`
+
+http://gems.rubyforge.org to look up gems
+http://gemcutter.org for managing gems, create account there.
+
+`gem install gemcutter`
+
+`gem push document-1.0.1.gem`
+
+## Rakefile to automate gem creation
+> Rakefile takes advantage of the built-in tasks that will build a gem for you. All you need to do is specify the gemspec information in the Rakefile.
+
+## Gem naming conflicts
+
+Wrap your own classed in a module to avoid conflicting with classes in other gems
+
+Avoid filename collison by specifying the full path for the local file. 
+```
+dir = File.expand_path( File.dirname(__FILE__) )
+require File.join( dir, 'document' )
+```
+
+# Chapter 30 Know your Ruby implementation
+
+- MRI, Matz's Ruby Interpreter v1.8.7
+- YARV, Yet Another Ruby VM v1.9
+```
+
 
 
 
