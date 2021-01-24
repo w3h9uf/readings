@@ -341,6 +341,16 @@ the_symbol = 'all'.to_sym
 _Use string for data, treat symbol as 'stand for', a const expression_
 
 
+For hashes, you can also do this
+```
+h = { id: 1234, name: "jz" }
+
+# is the same as doing this
+
+h = { :id => 1234, :name => "jz" }
+```
+
+
 
 # Chapter 7 Everything is an object
 
