@@ -39,5 +39,9 @@ With `Guardfile`, you can specify which test to run for which file change.
 `bundle exec guard init` to init Guardfile
 `bundle exec guard` to start automated test
 
+## Rails flavoed Ruby
+
+- Blocks allows you do this `%w{a, b, c}.map{&:upcase}`
+
 
 
