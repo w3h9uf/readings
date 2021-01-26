@@ -33,6 +33,9 @@ This will generate a db/migrate file. Run `rails db:migrate` to udpate database.
 
 `rails console` neat tool with DSL to query database.
 
+`rails generate integration_test <test_name>` to generate integration test
+
+`rails test:integration` to run integration test
 
 ## Guard automated test
 With `Guardfile`, you can specify which test to run for which file change. 
