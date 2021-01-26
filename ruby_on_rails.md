@@ -24,7 +24,7 @@ Change Gemfile, `bundle install --without production` for reinstall the gems
 `rails generate scaffold <model_name> <schema>` to generate scaffold code
 `rails generate scaffold User name:string email:string`
 
-This will generate a db/migrate file. Run `rails db:migrate` to udpate database.
+This will generate a db/migrate file. Run `rails db:migrate` to udpate database. Run `rails db:rollback` to undo db migration
 
 `rails generate controller StaticPages home help` generate controller for /static_pages/home and /static_pages/help
 
@@ -36,6 +36,38 @@ This will generate a db/migrate file. Run `rails db:migrate` to udpate database.
 `rails generate integration_test <test_name>` to generate integration test
 
 `rails test:integration` to run integration test
+
+
+
+## ActiveRecord (ApplicationRecord)
+`rails generate model User name:string email:string` generate data model (migrate file). Rails will generate id, create_ts and update_ts automatically
+
+`rails console --sandbox` bring up sandbox console
+
+```
+# create/delete
+user = User.new()
+
+user.save
+
+user.create()
+user.destroy
+
+# search
+User.find(id)  # find by key
+User.find_by(id) # find by non-key column
+User.all  # get all users
+
+# update
+user.email = "different_eamil@test.com"  # update user in memory
+user.save
+
+user.update_attributes(name: 'the name', email: 'the email') # update user in database
+
+
+
+```
+
 
 ## Guard automated test
 With `Guardfile`, you can specify which test to run for which file change. 
