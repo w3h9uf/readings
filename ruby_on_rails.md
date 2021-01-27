@@ -79,4 +79,21 @@ With `Guardfile`, you can specify which test to run for which file change.
 - Blocks allows you do this `%w{a, b, c}.map{&:upcase}`
 
 
+## User password and authentication
 
+`rails generate migration add_password_digest_to_user password_digest: string` to create db migration to add column password_digest
+
+`rails db:migrate` to do migration
+
+```
+class User < ApplicationRecord
+  # ...
+  
+  # this will let rails create password and password_confirmation to user class as attributes.
+  has_secure_password
+ end
+```
+
+When creating user, pass in `password` and `password_confirmation`. Rails will create a hash `password_digest` and store in database. 
+
+When authenticating user, `user.authenticate('password')` will return user if password matches and return false otherwise.
