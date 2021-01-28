@@ -37,6 +37,8 @@ This will generate a db/migrate file. Run `rails db:migrate` to udpate database.
 
 `rails test:integration` to run integration test
 
+you can put `debugger` in rails code to print debug information in console.
+
 
 
 ## ActiveRecord (ApplicationRecord)
