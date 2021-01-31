@@ -11,6 +11,7 @@
 `heroku run <command>` to run command on heroku. 
 - `heroku run rails db:migrate` to do db migration on prod
 - `heroku run rails console` to look up prod db
+- `heroku maintenance:on/off` to turn on/off maintenace mode of prod, run this before deploying to prod with db:migrate
 
 
 # Rails
