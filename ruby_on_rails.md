@@ -67,10 +67,19 @@ user.save
 
 user.update_attributes(name: 'the name', email: 'the email') # update user in database
 
-
-
 ```
 
+### `has_secure_password`
+A rails method that will generate 
+1. ability to save `password_digest` column in database (needs explicit db migration)
+2. `password` and `password_confirmantion` _virtual_ attributes for the modeled data.
+3. `authenticate` method that returns the modeled data (etc. user) when the password is correct, and `false` otherwise.
+
+### the 'uglies'
+
+#### `to_users` in db migration has special meaning!
+
+> To implement the data model in Figure 6.9, we first generate an appropriate migration for the password_digest column. We can choose any migration name we want, but it’s convenient to end the name with to_users, since in this case Rails automatically constructs a migration to add columns to the users table. The result, with migration name add_password_digest_to_users, appears as follows:
 
 ## Guard automated test
 With `Guardfile`, you can specify which test to run for which file change. 
