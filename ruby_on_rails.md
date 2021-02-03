@@ -69,11 +69,44 @@ user.update_attributes(name: 'the name', email: 'the email') # update user in da
 
 ```
 
+Use db/seed.rb to generate sample data, then use `rails db:seed` to populate user into database.
+
 ### `has_secure_password`
 A rails method that will generate 
 1. ability to save `password_digest` column in database (needs explicit db migration)
 2. `password` and `password_confirmantion` _virtual_ attributes for the modeled data.
 3. `authenticate` method that returns the modeled data (etc. user) when the password is correct, and `false` otherwise.
+
+### ActiveRecord Callbacks
+order of callback execution
+(-) save
+
+(-) valid
+
+(1) before_validation
+
+(-) validate
+
+(2) after_validation
+
+(3) before_save
+
+(4) before_create
+
+(-) create
+
+(5) after_create
+
+(6) after_save
+
+(7) after_commit
+
+### `validates`
+ensures only valid data is saved into database.
+
+`validates` will only happend on `create`, `save` and `update`, i.e. before deadling with database write
+
+validation errors are stored in `user.errors`
 
 ### the 'uglies'
 
