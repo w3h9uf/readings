@@ -143,3 +143,8 @@ class User < ApplicationRecord
 When creating user, pass in `password` and `password_confirmation`. Rails will create a hash `password_digest` and store in database. 
 
 When authenticating user, `user.authenticate('password')` will return user if password matches and return false otherwise.
+
+
+
+
+`form_with` to create form to take user input and transform to POST or PATCH request
