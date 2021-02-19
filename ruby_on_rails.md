@@ -145,6 +145,6 @@ When creating user, pass in `password` and `password_confirmation`. Rails will c
 When authenticating user, `user.authenticate('password')` will return user if password matches and return false otherwise.
 
 
-
+---
 
 `form_with` to create form to take user input and transform to POST or PATCH request
