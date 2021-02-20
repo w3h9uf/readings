@@ -148,3 +148,7 @@ When authenticating user, `user.authenticate('password')` will return user if pa
 ---
 
 `form_with` to create form to take user input and transform to POST or PATCH request
+
+[`accepts_nested_attributes_for`](https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html) to populate associated model fields into `params`. Commonly used for `form_with`
+
+
