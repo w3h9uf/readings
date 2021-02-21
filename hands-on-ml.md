@@ -101,5 +101,10 @@ _training set/test set_
 
 
 
+# Chapter 2
 
+Performance Measure
+
+- _Root Mean Squre Error_(RMSE)
+- _Mean absolute error_ 
 
