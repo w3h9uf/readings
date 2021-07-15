@@ -9,3 +9,7 @@
     - single inheritance
     - free init intializes NO vars
     - always mutable
+
+
+`private(set)` mean read-only data member in class/struct
+
