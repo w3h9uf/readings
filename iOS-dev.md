@@ -38,3 +38,9 @@ if let safehello = hello {
 ```
 
 `typealias` for type def 
+
+
+## Computed Properties
+can define `get` and `set` method, `get` is the default one if not specified
+
+
