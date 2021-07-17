@@ -43,4 +43,11 @@ if let safehello = hello {
 ## Computed Properties
 can define `get` and `set` method, `get` is the default one if not specified
 
+## Property Observers
+syntactically similar with computed properties but different thing
+`willSet` (`newValue`) watches the change of property and invoke the observer function
+the same for `didSet` (`oldValue`)
+
+
+
 
