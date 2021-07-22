@@ -55,4 +55,12 @@ Implementation can be added to a protocol by creating an `extension` to it.
 Adding extensions to protocols is key to protocol-oriented programming in swift
 
 
+## Shape 
+
+### generic functions
+```
+func fill<S>(_ whatToFillWith: S) -> some View where S: ShapeStyle { ... }
+```
+
+
 
