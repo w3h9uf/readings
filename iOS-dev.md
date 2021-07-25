@@ -62,5 +62,18 @@ Adding extensions to protocols is key to protocol-oriented programming in swift
 func fill<S>(_ whatToFillWith: S) -> some View where S: ShapeStyle { ... }
 ```
 
+## Color
+
+- Color
+- UIColor
+- CGColor
+
+## Image
+
+- Image (a View)
+- UIImage (manipulating images, use Image(uIImage) to display it)
+
+
+
 
 
