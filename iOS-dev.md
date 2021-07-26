@@ -98,7 +98,7 @@ queue.async { }  // almost always use async
 queue.sync { }
 ```
 
-
+!! IMPORTANT: Do not publish things to cause UI to rebuild on background queues.
 
 
 
