@@ -75,5 +75,24 @@ func fill<S>(_ whatToFillWith: S) -> some View where S: ShapeStyle { ... }
 
 
 
+# Multithreading
+
+## Queues
+Swift manages the complexity of making multithread code authorable, readable and understandable using **queues**
+
+A queue is just a bunch of _blocks of code_, _lined up_, waiting for a thread to execute them. 
+
+You don't worry about the threads in swift, you are concerned only with queues. 
+
+- **main queue** serves all UI rendering
+- **Background queues**: non-UI tasks (including animation)
+
+## Grand Central Dispatch (GCD)
+Two fundamental tasks: 
+1. getting access to a queue
+2. plopping a block of code on a queue
+
+
+
 
 
