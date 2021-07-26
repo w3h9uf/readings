@@ -101,6 +101,14 @@ queue.sync { }
 !! IMPORTANT: Do not publish things to cause UI to rebuild on background queues.
 
 
+## Closure capturing
+default capture is **strong capture**. 
 
+A weak capture 
+```
+closure(...) { [weak id] in 
+  id?.present
+}
+```
 
 
