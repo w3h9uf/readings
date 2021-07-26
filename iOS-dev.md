@@ -92,6 +92,14 @@ Two fundamental tasks:
 1. getting access to a queue
 2. plopping a block of code on a queue
 
+```
+let queue = DispatchQueue.main // or DispatchQueue.global(qos:)
+queue.async { }  // almost always use async
+queue.sync { }
+```
+
+
+
 
 
 
