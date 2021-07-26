@@ -111,4 +111,24 @@ closure(...) { [weak id] in
 }
 ```
 
+# Gestures
+- Discreate gestures (onEnded {...})
+- Non-Discrete gestures
+
+```
+var theGesture: some Gesture {
+  DragGesture(...)
+    // updating will cause the closure you pass to it to be called when fingers move.
+    // $myGestureState: is @GestureState
+    // myGestureState is essentially your @GestureState. the only place you can change @GestureState
+    // transaction argument has to do with animation, not very often used.
+    .updating($myGestureState) { value, myGestureState, transaction in
+      myGestureState = compute(value)
+    }
+    .onEnded { value in 
+      /* do something */
+    }
+}
+```
+
 
