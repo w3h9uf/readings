@@ -131,4 +131,56 @@ var theGesture: some Gesture {
 }
 ```
 
+# Property Wrappers
+All of property wrappers are `struct`s
+
+```
+@Published var emojiArt: EmojiArt = EmojiArt()
+
+// is wirtten as below internally
+struct Publised {
+  var wrappedValue: EmojiArt
+  // projectedValue can be accessed by $emojiArt
+  var projectedValue: Publisher<EmojiArt, Never>
+}
+
+var _emojiArt: Published = Published(wrappedValue: EmojiArt())
+var emojiArt: EmojiArt {
+  get { _emojiArt.wrappedValue }
+  set { _emojiArt.wrappedValue = newValue }
+}
+```
+
+- @State
+- @StateObject
+- @ObservedObject
+- @Binding
+- @EnvironmentObject
+- @Environment
+
+## Binding
+> Bindings are always about the source of truth
+
+```
+struct MyView: View {
+  @State var myString = "Hello"
+  var body: some View {
+    OtherView(sharedText: $myString)
+  }
+}
+
+struct OtherView: View {
+  @Binding var sharedText: String
+  var body: some View {
+    Text(sharedText)
+    TextField("Shared", text: $sharedText)
+  }
+}
+// OtherView's sharedText is bound to MyView's myString
+// Changing sharedText changes myString (and vice versa)
+```
+
+
+
+
 
